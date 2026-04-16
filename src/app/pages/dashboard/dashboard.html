@@ -1,0 +1,156 @@
+<div class="min-h-screen bg-app-bg font-montserrat">
+
+  <!-- Navigation -->
+  <nav class="w-full h-[70px] bg-white border-b border-black/10 backdrop-blur-[9.35px] flex items-center px-6 lg:px-[100px] sticky top-0 z-50">
+    <div class="flex items-center justify-between w-full gap-4">
+
+      <!-- Logo -->
+      <span class="text-black font-bold text-xl whitespace-nowrap shrink-0">Транскрибация Встреч</span>
+
+      <!-- Nav links -->
+      <div class="flex items-center gap-3">
+        <button class="flex items-center justify-center px-[10px] py-[5px] rounded-lg bg-black text-white text-base font-semibold whitespace-nowrap hover:bg-gray-900 transition-colors">
+          Мои встречи
+        </button>
+        <button
+          (click)="onUploadFile()"
+          class="flex items-center gap-2 px-[10px] py-[5px] rounded-lg border border-black text-black text-base font-semibold whitespace-nowrap hover:bg-gray-50 transition-colors"
+        >
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.17273 10.6729L1.16077 12.8062C1.1576 13.372 1.33517 13.9156 1.65442 14.3175C1.97366 14.7194 2.40843 14.9466 2.86308 14.9491L13.1486 15.0068C13.6033 15.0093 14.0406 14.787 14.3643 14.3887C14.688 13.9904 14.8717 13.4488 14.8748 12.8831L14.8868 10.7498" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M11.6133 5.4394L8.14627 1.11183L4.63092 5.40027" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8.1402 2.1889L8.09191 10.8049" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Загрузить файл
+        </button>
+      </div>
+
+      <!-- User info + Logout -->
+      <div class="flex items-center gap-3 shrink-0">
+        <div class="text-right hidden sm:block">
+          <div class="text-black font-semibold text-base leading-tight">{{ userName }}</div>
+          <div class="text-app-text-muted font-medium text-xs leading-tight">example&#64;gmail.com</div>
+        </div>
+        <button
+          (click)="onLogout()"
+          class="flex items-center gap-1.5 px-2 py-1 rounded-lg border border-app-icon text-app-text-icon text-[15px] font-medium hover:bg-gray-50 transition-colors whitespace-nowrap"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.33337 1.14285L3.20004 1.14285C2.63425 1.14285 2.09162 1.32347 1.69155 1.64496C1.29147 1.96645 1.06671 2.40248 1.06671 2.85714L1.06671 13.1429C1.06671 13.5975 1.29147 14.0335 1.69155 14.355C2.09162 14.6765 2.63425 14.8571 3.20004 14.8571L5.33337 14.8571" stroke="#39393D" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M10.6252 11.554L14.9333 8.06269L10.6252 4.57143" stroke="#39393D" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.8562 8.06269H5.24005" stroke="#39393D" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Выйти
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="px-6 lg:px-[100px] py-8 max-w-[1440px] mx-auto">
+
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
+      <div>
+        <h1 class="text-3xl lg:text-[36px] font-semibold text-black leading-[1.53]">Мои встречи</h1>
+        <p class="text-app-text-secondary text-lg font-normal">Здесь будут собраны все ваши встречи</p>
+      </div>
+      <button
+        (click)="onUploadFile()"
+        class="flex items-center gap-[9px] px-3 py-3 rounded-lg bg-black text-white font-semibold text-xl hover:bg-gray-900 transition-colors whitespace-nowrap self-start sm:self-auto"
+      >
+        <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1.48022 13.4716L1.46513 16.1643C1.46113 16.8784 1.68526 17.5646 2.08822 18.0719C2.49118 18.5791 3.03995 18.8659 3.61382 18.8691L16.5965 18.9419C17.1704 18.9451 17.7223 18.6645 18.1309 18.1618C18.5395 17.6591 18.7713 16.9754 18.7753 16.2613L18.7904 13.5686" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M14.6586 6.86574L10.2824 1.40337L5.8452 6.81635" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M10.2748 2.76288L10.2138 13.6382" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Загрузить новый файл
+      </button>
+    </div>
+
+    <!-- Meeting count badge + List -->
+    <div class="flex flex-col gap-0">
+      <!-- Count badge aligned to right -->
+      <div class="flex justify-end mb-2">
+        <div class="flex items-center justify-center px-[10px] py-[5px] rounded-lg border border-black/[0.21] bg-white">
+          <span class="font-inria font-bold text-[11px] text-black">{{ meetings.length }} встречи</span>
+        </div>
+      </div>
+
+      <!-- Meetings List -->
+      <div class="flex flex-col gap-[31px]">
+        @for (meeting of meetings; track meeting.id) {
+          <div class="bg-white rounded-[13px] border border-app-border px-[18px] sm:px-[29px] py-[30px] flex flex-col gap-5">
+
+            <!-- Title row -->
+            <div class="flex items-start gap-3">
+              <!-- Checkmark icon -->
+              <svg class="shrink-0 mt-0.5" width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 31.3913C20.6272 31.3913 22.2386 31.0708 23.7419 30.4481C25.2453 29.8254 26.6113 28.9126 27.762 27.762C28.9126 26.6113 29.8254 25.2453 30.4481 23.742C31.0708 22.2386 31.3913 20.6273 31.3913 19C31.3913 17.3728 31.0708 15.7614 30.4481 14.2581C29.8254 12.7547 28.9126 11.3887 27.762 10.238C26.6113 9.08739 25.2453 8.17466 23.7419 7.55194C22.2386 6.92921 20.6272 6.6087 19 6.6087C15.7136 6.6087 12.5618 7.91421 10.238 10.238C7.9142 12.5619 6.6087 15.7136 6.6087 19C6.6087 22.2864 7.9142 25.4382 10.238 27.762C12.5618 30.0858 15.7136 31.3913 19 31.3913Z" stroke="#A6C6FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14.8696 19L17.6232 21.4783L23.1304 16.5217" stroke="#A6C6FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <h2 class="text-black font-semibold text-lg sm:text-xl leading-tight mt-1">{{ meeting.title }}</h2>
+            </div>
+
+            <!-- Date -->
+            <div class="text-app-text-secondary text-[15px] font-normal pl-[50px]">
+              {{ meeting.date }}
+            </div>
+
+            <!-- Meta: duration + participants count -->
+            <div class="flex flex-wrap items-center gap-4 pl-[50px]">
+              <!-- Duration -->
+              <div class="flex items-center gap-1.5">
+                <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10.5 17.1316C11.3709 17.1316 12.2332 16.96 13.0378 16.6268C13.8424 16.2935 14.5734 15.805 15.1892 15.1892C15.805 14.5734 16.2935 13.8424 16.6268 13.0378C16.9601 12.2332 17.1316 11.3709 17.1316 10.5C17.1316 9.62912 16.9601 8.76677 16.6268 7.96219C16.2935 7.15761 15.805 6.42655 15.1892 5.81075C14.5734 5.19495 13.8424 4.70648 13.0378 4.37321C12.2332 4.03994 11.3709 3.86841 10.5 3.86841C8.7412 3.86841 7.05443 4.56709 5.81077 5.81075C4.56711 7.05442 3.86842 8.74118 3.86842 10.5C3.86842 12.2588 4.56711 13.9456 5.81077 15.1892C7.05443 16.4329 8.7412 17.1316 10.5 17.1316Z" stroke="#4E5767" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10.5 6.63159V10.4309L12.7105 12.7105" stroke="#4E5767" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="text-app-text-secondary text-[15px] font-normal">{{ meeting.duration }}</span>
+              </div>
+              <!-- Participant count -->
+              <div class="flex items-center gap-1.5">
+                <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M13.3478 5.57812C13.2501 6.92821 12.2485 7.96875 11.1562 7.96875C10.064 7.96875 9.06029 6.92892 8.96466 5.57812C8.86549 4.1735 9.84016 3.1875 11.1562 3.1875C12.4723 3.1875 13.4477 4.199 13.3478 5.57812Z" stroke="#4E5767" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M11.1563 10.0938C8.99229 10.0938 6.91121 11.1683 6.38988 13.2614C6.32117 13.5384 6.49471 13.8125 6.77946 13.8125H15.533C15.8178 13.8125 15.9906 13.5384 15.9226 13.2614C15.4013 11.135 13.3202 10.0938 11.1555 10.0938H11.1563Z" stroke="#4E5767" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M6.64063 6.17383C6.56271 7.25192 5.75309 8.10192 4.88113 8.10192C4.00846 8.10192 3.19742 7.25192 3.12092 6.17383C3.04159 5.05183 3.82925 4.25 4.88113 4.25C5.9323 4.25 6.71996 5.07237 6.64063 6.17383Z" stroke="#4E5767" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M6.84037 10.1582C6.24112 9.88408 5.58096 9.77853 4.88113 9.77853C3.15492 9.77853 1.49104 10.6363 1.07454 12.3087C1.02 12.5297 1.15813 12.7479 1.38621 12.7479H5.11346" stroke="#4E5767" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="text-app-text-secondary text-[15px] font-normal">{{ meeting.participantCount }} участников</span>
+              </div>
+            </div>
+
+            <!-- Participants -->
+            <div class="flex flex-wrap items-center gap-2 pl-[50px]">
+              <span class="text-app-text-secondary text-[15px] font-normal">Участники:</span>
+              @for (p of meeting.participants; track p.name) {
+                <span class="inline-flex items-center px-[5px] py-[2px] rounded-lg bg-app-tag-bg text-black text-[11px] font-medium">
+                  {{ p.name }}
+                </span>
+              }
+            </div>
+
+            <!-- Open Transcription Button -->
+            <div class="pl-[50px]">
+              <button
+                (click)="onOpenTranscription(meeting)"
+                class="flex items-center gap-[3px] px-[10px] py-[10px] rounded-lg border border-app-icon text-black font-semibold text-[15px] hover:bg-gray-50 transition-colors"
+              >
+                <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2.25 15.044C3.27613 14.4187 4.44013 14.0895 5.625 14.0895C6.80987 14.0895 7.97387 14.4187 9 15.044C10.0261 14.4187 11.1901 14.0895 12.375 14.0895C13.5599 14.0895 14.7239 14.4187 15.75 15.044" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2.25 4.75236C3.27613 4.12701 4.44013 3.79779 5.625 3.79779C6.80987 3.79779 7.97387 4.12701 9 4.75236C10.0261 4.12701 11.1901 3.79779 12.375 3.79779C13.5599 3.79779 14.7239 4.12701 15.75 4.75236" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2.25 4.75V15.0417" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M9 4.75V15.0417" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M15.75 4.75V15.0417" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Открыть транскрипцию
+              </button>
+            </div>
+
+          </div>
+        }
+      </div>
+    </div>
+
+  </main>
+</div>
