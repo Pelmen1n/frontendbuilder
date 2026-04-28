@@ -1,0 +1,140 @@
+<div class="min-h-screen bg-app-bg font-montserrat pb-12">
+
+  <!-- Навигация (пока дублируем как в dashboard, потом вынесем) -->
+  <nav class="w-full h-[70px] bg-white border-b border-black/10 flex items-center px-6 lg:px-[100px]">
+    <div class="flex items-center justify-between w-full">
+      <span class="text-black font-bold text-xl">Транскрибация Встреч</span>
+
+      <div class="flex items-center gap-3">
+        <button 
+          routerLink="/dashboard"
+          class="px-4 py-2 rounded-lg text-base font-semibold text-black hover:bg-gray-100 transition-colors">
+          Мои встречи
+        </button>
+        
+        <button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-black text-white font-semibold">
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.17273 10.6729L1.16077 12.8062C1.1576 13.372 1.33517 13.9156 1.65442 14.3175C1.97366 14.7194 2.40843 14.9466 2.86308 14.9491L13.1486 15.0068C13.6033 15.0093 14.0406 14.787 14.3643 14.3887C14.688 13.9904 14.8717 13.4488 14.8748 12.8831L14.8868 10.7498" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M11.6133 5.4394L8.14627 1.11183L4.63092 5.40027" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8.1402 2.1889L8.09191 10.8049" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Загрузить файл
+        </button>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div class="text-right hidden sm:block">
+          <div class="font-semibold">Danil Kolbasenko</div>
+          <div class="text-app-text-muted text-xs">example@gmail.com</div>
+        </div>
+        <button routerLink="/auth" 
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-app-icon text-app-text-icon hover:bg-gray-50">
+          Выйти
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="px-6 lg:px-[100px] max-w-[1440px] mx-auto pt-8">
+
+    <div class="flex items-center gap-3 mb-8">
+      <button (click)="goBack()" 
+              class="flex items-center gap-1.5 text-app-text-secondary hover:text-black transition-colors">
+        ← Назад
+      </button>
+      <h1 class="text-3xl lg:text-[36px] font-semibold text-black">Загрузить новый файл</h1>
+    </div>
+
+    <p class="text-app-text-secondary text-lg mb-10">
+      Загрузите аудио или видео запись встречи для автоматической транскрибации
+    </p>
+
+    <div class="bg-white rounded-[13px] border border-app-border p-8 max-w-3xl">
+
+      <!-- Upload Area -->
+      <div 
+        class="border-2 border-dashed border-app-border rounded-2xl p-12 text-center hover:border-app-icon transition-colors cursor-pointer"
+        (dragover)="onDragOver($event)"
+        (drop)="onDrop($event)"
+        (click)="fileInput.click()">
+        
+        <input 
+          #fileInput 
+          type="file" 
+          class="hidden"
+          accept=".mp3,.wav,.mp4,.avi,.mov"
+          (change)="onFileSelected($event)">
+
+        <div class="mx-auto w-14 h-14 bg-app-input-bg rounded-2xl flex items-center justify-center mb-4">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4V16M12 16L8 12M12 16L16 12" stroke="#868694" stroke-width="2" stroke-linecap="round"/>
+            <path d="M3 20H21" stroke="#868694" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <p class="text-black font-medium mb-1">Нажмите для выбора файла или перетащите его сюда</p>
+        <p class="text-app-text-secondary text-sm">
+          Поддерживаемые форматы: MP3, WAV, MP4, AVI, MOV
+        </p>
+
+        @if (file) {
+          <div class="mt-6 p-4 bg-app-input-bg rounded-xl text-left inline-block">
+            <p class="font-medium text-sm">Выбран файл:</p>
+            <p class="text-app-text-muted">{{ file.name }}</p>
+          </div>
+        }
+      </div>
+
+      <!-- Form Fields -->
+      <div class="mt-8 space-y-6">
+        <div>
+          <label class="block text-sm font-medium text-black mb-1.5">Название встречи</label>
+          <input 
+            type="text" 
+            [(ngModel)]="meetingTitle"
+            placeholder="Например: Разработка ASR-инструмента"
+            class="w-full px-4 py-3 rounded-xl bg-app-input-bg border border-transparent focus:border-app-icon outline-none text-base"
+          >
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-black mb-1.5">Описание (опционально)</label>
+          <textarea 
+            [(ngModel)]="meetingDescription"
+            rows="3"
+            placeholder="Дополнительная информация о встрече"
+            class="w-full px-4 py-3 rounded-xl bg-app-input-bg border border-transparent focus:border-app-icon outline-none resize-y min-h-[100px]"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button 
+        (click)="onSubmit()"
+        class="mt-10 w-full py-4 bg-black text-white font-semibold text-base rounded-xl hover:bg-gray-900 transition-colors">
+        Начать транскрибацию
+      </button>
+    </div>
+
+    <!-- Steps -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
+      <div class="bg-white rounded-2xl p-6 text-center border border-app-border">
+        <div class="w-12 h-12 mx-auto bg-app-accent/10 rounded-2xl flex items-center justify-center text-2xl mb-4">↑</div>
+        <h3 class="font-semibold mb-1">Шаг 1</h3>
+        <p class="text-app-text-secondary text-sm">Загрузите аудио или видео файл</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 text-center border border-app-border">
+        <div class="w-12 h-12 mx-auto bg-app-accent/10 rounded-2xl flex items-center justify-center text-2xl mb-4">▶️</div>
+        <h3 class="font-semibold mb-1">Шаг 2</h3>
+        <p class="text-app-text-secondary text-sm">Автоматическая транскрибация</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 text-center border border-app-border">
+        <div class="w-12 h-12 mx-auto bg-app-accent/10 rounded-2xl flex items-center justify-center text-2xl mb-4">✓</div>
+        <h3 class="font-semibold mb-1">Шаг 3</h3>
+        <p class="text-app-text-secondary text-sm">Получите текстовую расшифровку</p>
+      </div>
+    </div>
+
+  </main>
+</div>
